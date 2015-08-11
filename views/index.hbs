@@ -1,35 +1,40 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<h1>Welcome to {{title}}</h1>
 
+<div class="view-box">
+    <div class="player-header">
+        <span id="player-name" class="player-text">Player: </span>
+    <span class="update-name">
+        <a id="updateName" href="#" class="game-button">Update</a>
+    </span>
+    </div>
+    <div id="messagsa">
+        <div id="game-message" class="game-message"></div>
+    </div>
+    <div class="line-space"></div>
 
-<div class="outer">
-    <table class="board">
-        <tr>
-            <td class="cell" id="0-0"></td>
-            <td class="cell" id="0-1"></td>
-            <td class="cell" id="0-2"></td>
-        </tr>
-        <tr>
-            <td class="cell" id="1-0"></td>
-            <td class="cell" id="1-1"></td>
-            <td class="cell" id="1-2"></td>
-        </tr>
-        <tr>
-            <td class="cell" id="2-0"></td>
-            <td class="cell" id="2-1"></td>
-            <td class="cell" id="2-2"></td>
-        </tr>
-    </table>
+    <div class="game-box">
+        <div class="inner-box">
+            <div class="row0">
+                <div id="row0_0" class="boxdims"></div>
+                <div class="col2 coldim">
+                    <div id="row0_1" class="colbox"></div>
+                    <div id="row0_2" class="colbox"></div>
+                </div>
+            </div>
+            <div class="row1">
+                <div id="row1_0" class="boxdims"></div>
+                <div class="col2 coldim">
+                    <div id="row1_1" class="colbox"></div>
+                    <div id="row1_2" class="colbox"></div>
+                </div>
+            </div>
+            <div class="row2">
+                <div id="row2_0" class="boxdims"></div>
+                <div class="col2 coldim">
+                    <div id="row2_1" class="colbox"></div>
+                    <div id="row2_2" class="colbox"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<div>
-    <p style="float: left"> Computer A : X </p>
-    <p style="float: right"> Computer B : 0 </p>
-</div>
-
-<form method="POST">
-    <p> Name: <input type="text" name="name"> </p>
-    <p> <input type="submit" value="Submit"> </p>
-</form>
-
-<h1>Posted value : {{ name }} </h1>
