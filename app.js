@@ -3,6 +3,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
+var controller = require('./app/controller');
 
 var app = express();
 
@@ -23,9 +24,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
-});
+app.get('/', controller.get);
+
+app.post('/', controller.post);
 
 
 module.exports = app;

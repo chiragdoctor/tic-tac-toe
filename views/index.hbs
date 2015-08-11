@@ -1,3 +1,35 @@
 <h1>{{title}}</h1>
 <p>Welcome to {{title}}</p>
-This is the sample test ...
+
+
+<div class="outer">
+    <table class="board">
+        <tr>
+            <td class="cell" id="0-0"></td>
+            <td class="cell" id="0-1"></td>
+            <td class="cell" id="0-2"></td>
+        </tr>
+        <tr>
+            <td class="cell" id="1-0"></td>
+            <td class="cell" id="1-1"></td>
+            <td class="cell" id="1-2"></td>
+        </tr>
+        <tr>
+            <td class="cell" id="2-0"></td>
+            <td class="cell" id="2-1"></td>
+            <td class="cell" id="2-2"></td>
+        </tr>
+    </table>
+</div>
+
+<div>
+    <p style="float: left"> Computer A : X </p>
+    <p style="float: right"> Computer B : 0 </p>
+</div>
+
+<form method="POST">
+    <p> Name: <input type="text" name="name"> </p>
+    <p> <input type="submit" value="Submit"> </p>
+</form>
+
+<h1>Posted value : {{ name }} </h1>
