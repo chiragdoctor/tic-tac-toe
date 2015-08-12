@@ -55,7 +55,6 @@
 }
 
 #game-message {
-    float:left;
     width:100%;
     text-align: center;
     height:15px;
@@ -71,7 +70,6 @@
 .game-box {
     height:500px;
     width:500px;
-    float:left;
     margin:0px auto;
     font-size: 8em;
 }

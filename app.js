@@ -13,6 +13,8 @@ app.set('port', port);
 var server = http.createServer(app);
 server.listen(port);
 
+var io = require('socket.io')(http);
+
 console.log('Tic-Tac-Toe server listening on port %d', port);
 
 // view engine setup
