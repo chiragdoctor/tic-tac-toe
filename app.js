@@ -95,7 +95,14 @@ function Game(playerList,id) {
 }
 
 Game.prototype.startGame = function(){
-   console.log('game will start now..')
+    this.players.forEach(function(player) {
+        player.state="playing";
+        io.emit('player_update',player);
+    });
+
+    io.in(this.id).emit('begin_game',this);
+    io.in(this.playerX.id).emit('game_message',{message:"Game Started, You go First"});
+    io.in(this.playerO.id).emit('game_message',{message:"Game Started, Other Player Thinking"});
 }
 
 

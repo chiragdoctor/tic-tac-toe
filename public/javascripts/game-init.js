@@ -15,9 +15,19 @@ $(document).ready(function() {
 
     });
 
-function initGame(){
+
+    socket.on('begin_game', function(game){
+        console.log('begin game request', game);
+    })
+
+    socket.on('game_message', function (data) {
+
+        logEvent(data.message,true);
+    });
+
+
+    function initGame(){
     var userCookie = getCookie("userinfo");
-    console.log("usercookie", userCookie);
     if(userCookie != ""){
 
         getUserParams(userCookie)
@@ -28,11 +38,11 @@ function initGame(){
     }
     updateUsername();
     sendRequest();
+    // will update the username if page refresh.
+    refreshUsername();
 }
 
 function updateUsername(){
-
-
     $("#updateName").click(function(){
         var username = prompt("Add UserName", "");
         if(username != null){
@@ -44,8 +54,10 @@ function updateUsername(){
     });
 }
 
+function refreshUsername() {
+    $("#player-name").empty().append("Your Username: " + playerInfo.username);
+}
 function sendRequest(){
-    console.log('playerinfo', playerInfo.username);
     var request = {
         requestID: socketId,
         action: "Request Computer Game"
