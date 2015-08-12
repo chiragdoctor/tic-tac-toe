@@ -3,9 +3,13 @@ var socketId = '';
 
 var playerInfo ={
     username: '',
-    session: ''
+    session: '',
+    wins:0,
+    losses:0,
+    stalemates:0
 }
 var SHOW_SCORES=false;
+var playerIcon="X",oppPlayerIcon="O"
 
 $(document).ready(function() {
     var socket = io(HOST);
@@ -17,29 +21,69 @@ $(document).ready(function() {
     });
 
 
-    socket.on('begin_game', function(game){
+    socket.on('begin_game', function (game) {
         gameId = game.id;
 
         if (game.currentPlayer.id == socketId)
             updateBoard(game.board, true,game.aiscore);
         else
             updateBoard(game.board, false,game.aiscore);
-        $(".header").slideUp(250);
-        $(".gameIconPanel").slideDown(500);
         $(".gameViewBox").slideDown(500);
         if (game.currentPlayer.computerai) {
+            //aiTurnPlay(game);
             var row= Math.floor(Math.random() * 3-1) + 1;
             var col= Math.floor(Math.random() * 3-1) + 1;
-            var playerMoveInfo = {"gameId": game.id, "player": game.currentPlayer.id, "action": {"row": row, "quad": col}};
+            var playerInfo = {"gameId": game.id, "player": game.currentPlayer.id, "action": {"row": row, "quad": col}};
 
-            socket.emit('playTurn', playerMoveInfo);
+            socket.emit('playTurn', playerInfo);
         }
+
     });
 
     socket.on('game_message', function (data) {
+        //logEvent(data.message);
+        console.log(data.message);
+        $('#game-message').empty().append(data.message);
 
-        logEvent(data.message,true);
     });
+
+    socket.on('stale_mate', function (data) {
+        playerInfo.stalemates++;
+        persistUser();
+        updateBoard(data.board, false);
+        updateDisplay();
+    });
+
+    socket.on('turn_played', function (game) {
+
+        if (game.currentPlayer.id == socketId) {
+            updateBoard(game.board, true,game.aiscore);
+            $('#game-message').empty().append('Your Turn Now!');
+            if (game.currentPlayer.computerai) {
+                setTimeout(function() {aiTurnPlay(game);},COMPUTER_PACE_MS);
+            }
+        } else {
+            updateBoard(game.board, false,game.aiscore);
+            $('#game-message').empty().append('Waiting for Other Player!');
+        }
+    });
+
+    socket.on('game_won', function (data) {
+
+        updateBoard(data.game.board, false,data.game.aiscore);
+        if (data.winner.id == socketId) {
+            playerInfo.wins++;
+            $('#game-message').empty().append("<strong>You Won!</strong>");
+        } else {
+            playerInfo.losses++;
+            $('#game-message').empty().append("You Lost!");
+        }
+
+        persistUser();
+        updateDisplay();
+    });
+
+
 
 
     function initGame(){
@@ -53,9 +97,18 @@ $(document).ready(function() {
         playerInfo.session = socketId;
     }
     updateUsername();
-    sendRequest();
+    $('#playComputer').bind("click",function(){
+
+        var startDetails = {
+            requestID: socketId,
+            action: "Request Computer Game"
+
+        };
+        socket.emit('requestComputerGame', startDetails);
+
+    });
     // will update the username if page refresh.
-    refreshUsername();
+    updateDisplay();
 }
 
 function updateUsername(){
@@ -69,17 +122,13 @@ function updateUsername(){
         }
     });
 }
+function updateDisplay(){
 
-function refreshUsername() {
     $("#player-name").empty().append("Your Username: " + playerInfo.username);
-}
-function sendRequest(){
-    var request = {
-        requestID: socketId,
-        action: "Request Computer Game"
+    $("#wins").empty().append(playerInfo.wins);
+    $("#losses").empty().append(playerInfo.losses);
+    $("#ties").empty().append(playerInfo.stalemates);
 
-    };
-    socket.emit('requestComputerGame', request);
 }
 
 function getUserParams(userParams) {
@@ -107,8 +156,8 @@ function getCookie(cname) {
 }
 
 function persistUser() {
-    var user = playerInfo.username + '|' + playerInfo.session;
-    setCookie("userinfo", user, 3);
+    var cookieStr=playerInfo.username+"|"+playerInfo.session+"|"+playerInfo.wins+"|"+playerInfo.losses+"|"+playerInfo.stalemates;
+    setCookie("userinfo", cookieStr, 3);
 }
 
 function logEvent(event) {
@@ -138,10 +187,9 @@ function playSetup(row, quad) {
 }
 
 function playTurn(row, quad) {
-
-    var playerInfo = {"gameId": gameId, "player": socketId, "action": {"row": row, "quad": quad}};
+    var playerMoveInfo = {"gameId": gameId, "player": socketId, "action": {"row": row, "quad": quad}};
     $("#row" + row + "_" + quad).toggleClass("selecting");
-    socket.emit('playTurn', playerInfo);
+    socket.emit('playTurn', playerMoveInfo);
 
 }
 function updateBoard(game_data, activate,scores) {
@@ -173,7 +221,6 @@ function updateBoard(game_data, activate,scores) {
             else if (game_data[i][r] != 0) {
                 $(rowindex).unbind();
                 if (game_data[i][r] == socketId) {
-
                     $(rowindex).empty().append(playerIcon);
                 } else {
 

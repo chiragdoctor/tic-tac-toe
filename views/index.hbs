@@ -1,16 +1,27 @@
 <h1>Welcome to {{title}}</h1>
 
 <div class="view-box">
-    <div class="player-header">
-        <span id="player-name" class="player-text">Your Username: </span>
+    <div class=""playerInfoBoxx>
+        <div class="player-header">
+            <span id="player-name" class="player-text">Your Username: </span>
     <span class="update-name">
         <a id="updateName" href="#" class="game-button">Update</a>
     </span>
+        </div>
+        <div class="playerStatsBox">
+            <span alt="Wins" class="wins">wins:<span id="wins" class="basetext">0</span></span><span class="losses">losses:<span id="losses" class="basetext">0</span></span><span class="ties">ties:<span id="ties" class="basetext">0</span></span></div>
     </div>
-    <div id="messagsa">
+
+    <div id="messages">
         <div id="game-message" class="game-message"></div>
     </div>
     <div class="line-space"></div>
+
+    <div class="game-header">
+        <div class="game-action-pannel">
+            <a href="#" id="playComputer" class="game-buttom"> Play Computer</a>
+        </div>
+    </div>
 
     <div class="game-box">
         <div class="inner-box">

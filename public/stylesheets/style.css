@@ -64,7 +64,7 @@
 }
 
 .line-space {
-    height:75px;
+    height:10px;
 }
 
 .game-box {
@@ -172,4 +172,70 @@
 
 .selecting {
     background-color: grey;
+}
+
+.game-header {
+    width:90%;
+    height:10px;
+    margin:5px;
+    padding:5px;
+}
+
+.game-action-pannel{
+
+    width:100%;
+    height:20px;
+
+}
+
+.scoreText {
+    font-family: "Lucida Grande", "Helvetica Nueue", Arial, sans-serif;
+    font-size: .2em;
+    margin: auto;
+    color: lightgray;
+}
+
+.wins {
+    padding:5px;
+    margin:5px;
+    border-radius: 25px;
+    background-color: #04B486;
+
+
+}
+.losses {
+    padding:5px;
+    margin:5px;
+    border-radius: 25px;
+    background-color: #FF0000;
+
+}
+.ties {
+    padding:5px;
+    margin:5px;
+    border-radius: 25px;
+    background-color: #A4A4A4;
+
+}
+
+
+.playerStatsBox {
+    font-family: "Lucida Grande", "Helvetica Nueue", Arial, sans-serif;
+    font-size: .6em;
+    color: darkblue;
+    margin-top:8px;
+    margin-bottom:8px;
+    float:right;
+}
+
+.basetext {
+    font-family:  "Helvetica Nueue", Arial, sans-serif;
+    color:white;
+    text-align: center;
+    font-size: .7em;
+}
+
+.playerInfoBox{
+    float:left;
+
 }
