@@ -10,10 +10,10 @@ var app = express();
 var port = process.env.PORT || '3000';
 app.set('port', port);
 
-var server = http.createServer(app);
-server.listen(port);
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
-var io = require('socket.io')(http);
+server.listen(port);
 
 console.log('Tic-Tac-Toe server listening on port %d', port);
 
