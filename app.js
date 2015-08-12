@@ -30,5 +30,10 @@ app.get('/', controller.get);
 
 app.post('/', controller.post);
 
+io.on('connection', function(socket) {
+    socket.on('requestComputerGame', function(request){
+        console.log('request received for game', request);
+    })
+});
 
-module.exports = app;
+    module.exports = app;

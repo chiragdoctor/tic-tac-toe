@@ -6,7 +6,7 @@ var playerInfo ={
     session: ''
 }
 
-$(document).ready(function(){
+$(document).ready(function() {
     var socket = io(HOST);
     socket.on('connect', function () {
         socketId = socket.io.engine.id;
@@ -14,7 +14,6 @@ $(document).ready(function(){
         console.log("ID Assigned - " + socketId);
 
     });
-});
 
 function initGameSettings(){
     var userCookie = getCookie('UserCookie');
@@ -27,6 +26,17 @@ function initGameSettings(){
     }
     updateUsername();
 
+    sendRequest();
+
+}
+
+function sendRequest(){
+    var request = {
+        requestID: socketId,
+        action: "Request Computer Game"
+
+    };
+    socket.emit('requestComputerGame', request);
 }
 
 function getUserParams(userParams) {
@@ -70,3 +80,4 @@ function persistUser() {
     var user = playerInfo.username + '|' + playerInfo.session;
     setCookie("userinfo", user, 1);
 }
+});
