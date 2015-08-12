@@ -10,14 +10,16 @@ $(document).ready(function() {
     var socket = io(HOST);
     socket.on('connect', function () {
         socketId = socket.io.engine.id;
-        initGameSettings();
+        initGame();
         console.log("ID Assigned - " + socketId);
 
     });
 
-function initGameSettings(){
-    var userCookie = getCookie('UserCookie');
+function initGame(){
+    var userCookie = getCookie("userinfo");
+    console.log("usercookie", userCookie);
     if(userCookie != ""){
+
         getUserParams(userCookie)
     }
     else {
@@ -25,12 +27,25 @@ function initGameSettings(){
         playerInfo.session = socketId;
     }
     updateUsername();
-
     sendRequest();
+}
 
+function updateUsername(){
+
+
+    $("#updateName").click(function(){
+        var username = prompt("Add UserName", "");
+        if(username != null){
+            playerInfo.username = username;
+            persistUser();
+            $("#player-name").empty().append("Your Username: " + playerInfo.username);
+            socket.emit("updatePlayerName",{"name": username});
+        }
+    });
 }
 
 function sendRequest(){
+    console.log('playerinfo', playerInfo.username);
     var request = {
         requestID: socketId,
         action: "Request Computer Game"
@@ -41,7 +56,7 @@ function sendRequest(){
 
 function getUserParams(userParams) {
     var parseStr = userParams.split("|");
-    playerInfo.userName=parseStr[0];
+    playerInfo.username=parseStr[0];
     playerInfo.session=parseStr[1];
 }
 
@@ -63,21 +78,18 @@ function getCookie(cname) {
     return "";
 }
 
-function updateUsername(){
-    $("#updateName").click(function(){
-        var username = prompt("Add UserName", "");
-        if(username != null){
-            playerInfo.username = username;
-            persistUser();
-            $("#player-name").empty().append("Your Username: " + playerInfo.username);
-        }
-    });
-}
-
-
-
 function persistUser() {
     var user = playerInfo.username + '|' + playerInfo.session;
-    setCookie("userinfo", user, 1);
+    setCookie("userinfo", user, 3);
 }
+
+function logEvent(event) {
+    $('#game-message').empty().append(event);
+}
+
+socket.on('player_update', function (player) {
+    logEvent("Player " + player.playerName+ " Info Updated");
+});
+
+
 });
